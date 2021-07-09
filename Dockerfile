@@ -1,4 +1,4 @@
-ARG HUMHUB_VERSION=1.6.2
+ARG HUMHUB_VERSION=1.6.2.1
 
 FROM composer:1.10.12 as builder-composer
 
@@ -12,12 +12,13 @@ RUN apk add --no-cache \
     tzdata \
     wget
 
-WORKDIR /usr/src/
-RUN wget https://github.com/humhub/humhub/archive/v${HUMHUB_VERSION}.tar.gz -q -O humhub.tar.gz && \
-    tar xzf humhub.tar.gz && \
-    mv humhub-${HUMHUB_VERSION} humhub && \
-    rm humhub.tar.gz
-    
+COPY ./humhub-src /usr/src/humhub
+# WORKDIR /usr/src/
+# RUN wget https://github.com/humhub/humhub/archive/v${HUMHUB_VERSION}.tar.gz -q -O humhub.tar.gz && \
+#     tar xzf humhub.tar.gz && \
+#     mv humhub-${HUMHUB_VERSION} humhub && \
+#     rm humhub.tar.gz
+
 WORKDIR /usr/src/humhub
 
 COPY --from=builder-composer /usr/bin/composer /usr/bin/composer
